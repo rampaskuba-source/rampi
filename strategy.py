@@ -1,4 +1,4 @@
-"""Trend-following strategie (spot, jen LONG) – sdílená pro bota i backtest.
+"""Trend-following strategie (futures s pákou, jen LONG) – sdílená pro bota i backtest.
 
 Vstup:  EMA20 překříží EMA50 nahoru  a  cena je nad EMA200 (hlavní trend nahoru)
 Výstup: Stop-loss = vstup - SL_ATR * ATR
@@ -8,7 +8,9 @@ Výstup: Stop-loss = vstup - SL_ATR * ATR
 
 FAST, SLOW, TREND, ATR_LEN = 20, 50, 200, 14
 SL_ATR, TP_ATR = 2.0, 4.0          # risk:reward 1:2
-FEE = 0.001                        # 0,1 % za stranu (Binance/Bybit úroveň; Coinbase 0,6 % = ztrátové!)
+FEE = 0.0005                       # 0,05 % z velikosti pozice za stranu (futures taker)
+RISK_USD = 12.0                    # ztráta na stop-lossu ≈ $12, zisk na take-profitu ≈ $24
+MAX_LEV = 50                       # strop páky (velikost pozice max 50× equity)
 
 
 def ema(values, n):
@@ -34,8 +36,8 @@ def indicators(candles):
     return ema(c, FAST), ema(c, SLOW), ema(c, TREND), atr(h, l, c)
 
 
-def step(state, sym, candles, i, ind, alloc):
-    """Zpracuje uzavřenou svíčku i. Vrací seznam událostí (obchodů)."""
+def step(state, sym, candles, i, ind, alloc=None):
+    """Zpracuje uzavřenou svíčku i (futures/páka, jen LONG). Vrací seznam obchodů."""
     f, s, t, a = ind
     _, _, hi, lo, close, _ = candles[i]
     ts = candles[i][0]
@@ -51,32 +53,38 @@ def step(state, sym, candles, i, ind, alloc):
         elif f[i] < s[i]:
             exit_px, reason = close, "trend skončil (EMA20 < EMA50)"
         if exit_px:
-            proceeds = pos["qty"] * exit_px * (1 - FEE)
-            pnl = proceeds - pos["cost"]
-            state["cash"] += proceeds
+            pnl = pos["qty"] * (exit_px - pos["entry"]) - pos["qty"] * exit_px * FEE
+            state["cash"] += pnl
+            total = pnl - pos["fee_in"]
             del state["positions"][sym]
-            tr = {"t": ts, "symbol": sym, "action": "SELL", "price": round(exit_px, 2),
-                  "qty": pos["qty"], "pnl": round(pnl, 2), "pnl_pct": round(pnl / pos["cost"] * 100, 2), "reason": reason}
+            tr = {"t": ts, "symbol": sym, "action": "SELL", "price": round(exit_px, 2), "qty": pos["qty"],
+                  "pnl": round(total, 2), "pnl_pct": round(total / pos["margin"] * 100, 1), "reason": reason}
             state["trades"].append(tr)
             events.append(tr)
         return events
 
     cross_up = f[i - 1] <= s[i - 1] and f[i] > s[i]
     if cross_up and close > t[i]:
-        spend = min(state["cash"], alloc)
-        if spend < 1:
+        eq = state["cash"]
+        if eq < RISK_USD:                      # účet je příliš malý – neobchoduje
             return events
-        qty = spend * (1 - FEE) / close
-        state["cash"] -= spend
-        state["positions"][sym] = {"qty": qty, "entry": close, "cost": spend, "t": ts,
-                                   "sl": close - SL_ATR * a[i], "tp": close + TP_ATR * a[i]}
+        dist = SL_ATR * a[i]
+        qty = RISK_USD / dist
+        qty = min(qty, eq * MAX_LEV / close)   # strop páky
+        notional = qty * close
+        fee_in = notional * FEE
+        state["cash"] -= fee_in
+        margin = eq / 2
+        state["positions"][sym] = {"qty": qty, "entry": close, "t": ts, "fee_in": fee_in, "margin": margin,
+                                   "sl": close - dist, "tp": close + TP_ATR * a[i]}
         tr = {"t": ts, "symbol": sym, "action": "BUY", "price": round(close, 2), "qty": qty,
-              "sl": round(close - SL_ATR * a[i], 2), "tp": round(close + TP_ATR * a[i], 2),
-              "reason": "EMA20 překřížila EMA50 nahoru, cena nad EMA200"}
+              "notional": round(notional, 2), "lev": round(notional / eq, 1),
+              "sl": round(close - dist, 2), "tp": round(close + TP_ATR * a[i], 2),
+              "reason": f"EMA20 překřížila EMA50 nahoru, cena nad EMA200 · pozice ${notional:.0f} ({notional / eq:.0f}× páka)"}
         state["trades"].append(tr)
         events.append(tr)
     return events
 
 
 def equity(state, prices):
-    return state["cash"] + sum(p["qty"] * prices[s] for s, p in state["positions"].items())
+    return state["cash"] + sum(p["qty"] * (prices[s] - p["entry"]) for s, p in state["positions"].items())
