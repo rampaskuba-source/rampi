@@ -1,0 +1,35 @@
+name: trend-bot
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"     # každých 15 min (GitHub to občas o pár minut zpozdí)
+  workflow_dispatch:            # ruční spuštění tlačítkem "Run workflow"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trend-bot
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: python bot.py
+        env:
+          MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
+          START_BALANCE: "50"
+          SYMBOLS: "BTC-USD,ETH-USD"
+      - name: Uložit stav
+        run: |
+          git config user.name "trend-bot"
+          git config user.email "trend-bot@users.noreply.github.com"
+          git add state.json
+          git diff --cached --quiet || (git commit -m "bot: update state" && git push)
