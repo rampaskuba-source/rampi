@@ -1,0 +1,4 @@
+[build]
+  base = "podnikani"
+  publish = "."
+  command = ""
