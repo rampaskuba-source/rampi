@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Jak začít podnikat</title>
+<meta name="description" content="Stručný průvodce začátkem podnikání v Česku: 10 kroků od nápadu po první fakturu a kalkulačka odvodů 2026/2027.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23e3120b' stroke-width='3'/%3E%3Ctext x='16' y='21' font-size='13' text-anchor='middle' fill='%23e3120b' font-family='serif' font-weight='700'%3EIČ%3C/text%3E%3C/svg%3E">
+<style>
+/* VOICE: stručný, sebevědomý průvodce, prémiový ale lidský
+   IDEA: úřední formulář, který dostane razítko START
+   PICTURE: formulář s IČO kolonkami a padajícím razítkem
+   COLOUR and TYPE: čistá bílá, inkoust, razítková červená, teplá šedá; Source Serif 4 + Inter
+   LAYOUT: velký titul + formulář, 10 rozbalovacích kroků, kalkulačka s velkým výsledkem, čísla, footer */
+:root{color-scheme:light;--bg:#fff;--ink:#0f1115;--mute:#5b6168;--red:#e3120b;--soft:#f4f4f2;--rule:#e2e2df;--deep:#0f1115}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.6 Inter,system-ui,sans-serif;overflow-x:clip;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,serif;line-height:1.05;text-wrap:balance;margin:0 0 .45em;letter-spacing:-.01em}
+h1{font-size:clamp(40px,6.2vw,72px)}h2{font-size:clamp(30px,3.8vw,44px)}h3{font-size:20px;line-height:1.25}
+p{max-width:64ch}a{color:inherit}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.band{padding:clamp(40px,6vw,96px) max(5vw,18px)}.wrap{max-width:1180px;margin:0 auto}
+#pr{position:fixed;inset:0 0 auto;height:3px;background:var(--red);transform-origin:0 50%;transform:scaleX(0);z-index:20}
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:center}
+.kick{font-weight:600;color:var(--red);margin-bottom:14px}
+.lead{font-size:clamp(17px,1.6vw,20px);color:var(--mute);max-width:46ch}
+.in>*{animation:rise .8s cubic-bezier(.2,.8,.2,1) both}.in>:nth-child(2){animation-delay:.08s}.in>:nth-child(3){animation-delay:.16s}.in>:nth-child(4){animation-delay:.24s}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;font:600 16px Inter,sans-serif;border:1.5px solid var(--ink);color:var(--ink);background:none;text-decoration:none;cursor:pointer;border-radius:999px;transition:transform .15s,background .15s,color .15s}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:translateY(0)}
+.btn.pri{background:var(--red);border-color:var(--red);color:#fff}
+.form{position:relative;background:#fff;border:1px solid var(--rule);border-radius:6px;padding:26px 26px 30px;box-shadow:0 30px 60px -30px rgba(15,17,21,.35),0 2px 0 var(--rule);animation:rise 1s .1s cubic-bezier(.2,.8,.2,1) both;transform:rotate(1.2deg)}
+.form header{display:flex;justify-content:space-between;gap:10px;align-items:baseline;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:10px;font-size:13px;color:var(--mute)}
+.form header b{font-family:"Source Serif 4",serif;font-size:22px;color:var(--ink)}
+.fld{display:grid;grid-template-columns:9em 1fr;gap:10px;align-items:end;padding:10px 0;border-bottom:1px dashed var(--rule);font-size:14px}
+.fld span{color:var(--mute)}.fld i{font-style:normal;font-family:"Source Serif 4",serif;font-size:18px}
+.boxes{display:flex;gap:3px;flex-wrap:wrap}.boxes em{width:24px;height:30px;border:1.5px solid var(--ink);border-radius:2px;display:grid;place-items:center;font:600 16px "Source Serif 4",serif;font-style:normal;animation:type .3s both}
+@keyframes type{from{color:transparent}}
+.ticks{display:flex;flex-wrap:wrap;gap:6px 16px}.ticks s{text-decoration:none}.ticks s::before{content:"";display:inline-block;width:13px;height:13px;border:1.5px solid var(--ink);margin-right:6px;vertical-align:-1px}.ticks s.on::before{background:var(--ink);box-shadow:inset 0 0 0 2px #fff}
+.stamp{position:absolute;right:-4%;bottom:-10%;width:clamp(120px,34%,170px);color:var(--red);animation:stamp .55s cubic-bezier(.2,1.6,.4,1) 1.1s both;mix-blend-mode:multiply}
+@keyframes stamp{from{transform:rotate(-14deg) scale(2.4);opacity:0}to{transform:rotate(-14deg) scale(1);opacity:.9}}
+/* nav */
+.nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.nav .scroll{display:flex;gap:4px;max-width:calc(1180px + 2*max(5vw,18px));margin:0 auto;padding:0 calc(max(5vw,18px) - 12px)}
+.nav a{flex:none;padding:14px 12px;text-decoration:none;font-size:15px;font-weight:500;color:var(--mute);transition:color .15s}
+.nav a:hover,.nav a.on{color:var(--ink)}.nav a.on{box-shadow:inset 0 -2px var(--red)}
+/* kroky */
+.steps{list-style:none;padding:0;margin:28px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.step{background:var(--soft);border-radius:6px;transition:transform .2s,box-shadow .2s,background .2s}
+.step:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(15,17,21,.4)}
+.step.open{background:#fff;box-shadow:0 0 0 1.5px var(--ink)}
+.step button{all:unset;box-sizing:border-box;display:grid;grid-template-columns:44px minmax(0,1fr) 24px;gap:12px;align-items:center;width:100%;padding:20px 20px;cursor:pointer}
+.step button:focus-visible{outline:3px solid var(--red);outline-offset:-3px;border-radius:6px}
+.num{font:700 34px/1 "Source Serif 4",serif;color:var(--red)}
+.step h3{margin:0}.step small{display:block;color:var(--mute);font:400 14.5px/1.45 Inter,sans-serif;margin-top:3px}
+.pl{width:22px;height:22px;position:relative}.pl::before,.pl::after{content:"";position:absolute;left:3px;right:3px;top:10px;height:2px;background:var(--ink);transition:transform .25s}.pl::after{transform:rotate(90deg)}.open .pl::after{transform:rotate(0)}
+.body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}.open .body{grid-template-rows:1fr}
+.body>div{overflow:hidden}.body ul{margin:0;padding:0 22px 20px 96px}.body li{margin:5px 0;max-width:60ch}
+.rv{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s cubic-bezier(.2,.8,.2,1)}.rv.vis{opacity:1;transform:none}
+/* kalkulačka */
+.calc{background:var(--deep);color:#fff}
+.calc .lead{color:#b9bec5}
+.cgrid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);margin-top:22px}
+label{display:block;font-weight:600;font-size:15px;margin:16px 0 8px}
+input[type=number],select{width:100%;min-height:48px;font:16px Inter,sans-serif;padding:8px 12px;border:1.5px solid #3a3f47;background:#1a1d22;color:#fff;border-radius:6px}
+input[type=range]{width:100%;accent-color:var(--red);height:28px;margin-top:6px}
+.seg{display:inline-flex;background:#1a1d22;border:1.5px solid #3a3f47;border-radius:999px;padding:3px}
+.seg button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:none;color:#b9bec5;font:600 15px Inter,sans-serif;cursor:pointer;transition:background .2s,color .2s}
+.seg button[aria-pressed=true]{background:#fff;color:var(--ink)}
+.out{background:#fff;color:var(--ink);border-radius:8px;padding:clamp(20px,3vw,32px)}
+.big{font:700 clamp(44px,6.5vw,76px)/1 "Source Serif 4",serif;white-space:nowrap;letter-spacing:-.02em}
+.sub{color:var(--mute);font-size:15px;margin-top:8px}
+.bar{height:10px;display:flex;margin:20px 0 6px;background:var(--soft);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.row{display:grid;grid-template-columns:14px minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--rule)}
+.dot{width:10px;height:10px;border-radius:50%}.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.cmp{margin-top:16px;padding:12px 14px;background:var(--soft);border-radius:6px;font-size:15px}
+.note{font-size:13.5px;color:var(--mute);margin:12px 0 0}
+/* čísla */
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:6px;overflow:hidden;margin-top:24px}
+.facts div{background:#fff;padding:20px}.facts b{display:block;font:700 30px/1.1 "Source Serif 4",serif;white-space:nowrap}.facts span{color:var(--mute);font-size:14.5px}
+footer{background:var(--soft);font-size:14px;color:var(--mute)}footer p{max-width:80ch}
+@media(max-width:860px){.hero,.cgrid,.steps{grid-template-columns:minmax(0,1fr)}.form{transform:none}}
+@media(max-width:600px){.stamp{right:-2%;bottom:-6%}.fld{grid-template-columns:minmax(0,1fr);gap:2px}.body ul{padding:0 18px 18px 40px}.step button{grid-template-columns:34px minmax(0,1fr) 22px;padding:16px}.num{font-size:28px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div id="pr" aria-hidden="true"></div>
+
+<header class="band"><div class="wrap hero">
+  <div class="in">
+    <div class="kick">Průvodce pro začínající podnikatele</div>
+    <h1>Začni podnikat. Bez chaosu.</h1>
+    <p class="lead">10 kroků od nápadu po první fakturu a kalkulačka, která ti hned ukáže, kolik zaplatíš státu.</p>
+    <div class="btns"><a class="btn pri" href="#kalkulacka">Spočítat odvody</a><a class="btn" href="#kroky">Zobrazit kroky</a></div>
+  </div>
+  <figure class="form" aria-label="Ilustrace: formulář ohlášení živnosti s razítkem" style="margin:0">
+    <header><b>Ohlášení živnosti</b><span>Jednotný registrační formulář</span></header>
+    <div class="fld"><span>Jméno</span><i>Tvoje jméno</i></div>
+    <div class="fld"><span>Předmět podnikání</span><i>Výroba, obchod a služby</i></div>
+    <div class="fld"><span>IČO (ilustrační)</span><div class="boxes" aria-hidden="true"></div></div>
+    <div class="fld"><span>Činnost</span><div class="ticks"><s>hlavní</s><s class="on">vedlejší</s></div></div>
+    <svg class="stamp" viewBox="0 0 160 160" aria-hidden="true">
+      <circle cx="80" cy="80" r="74" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="80" cy="80" r="62" fill="none" stroke="currentColor" stroke-width="2"/>
+      <defs><path id="arc" d="M30 80a50 50 0 1 1 100 0a50 50 0 1 1 -100 0"/></defs>
+      <text font-family="Inter,sans-serif" font-weight="700" font-size="13" letter-spacing="2" fill="currentColor"><textPath href="#arc">ŽIVNOSTENSKÝ ÚŘAD · ZAPSÁNO ·</textPath></text>
+      <text x="80" y="89" text-anchor="middle" font-family="'Source Serif 4',serif" font-weight="700" font-size="27" fill="currentColor">START</text>
+    </svg>
+  </figure>
+</div></header>
+
+<nav class="nav" aria-label="Obsah"><div class="scroll">
+  <a href="#kroky">Kroky</a><a href="#kalkulacka">Kalkulačka</a><a href="#cisla">Čísla 2027</a><a href="#zdroje">Zdroje</a>
+</div></nav>
+
+<main>
+<section class="band" id="kroky"><div class="wrap">
+  <h2>10 kroků od nápadu k první faktuře</h2>
+  <p class="lead">Klikni na krok a uvidíš, co přesně udělat.</p>
+  <ol class="steps" id="steps"></ol>
+</div></section>
+
+<section class="band calc" id="kalkulacka"><div class="wrap">
+  <h2>Kolik zaplatíš státu</h2>
+  <p class="lead">Posuň příjmy a výsledek se hned přepočítá.</p>
+  <div class="cgrid">
+    <form onsubmit="return false">
+      <label for="inc">Roční příjmy: <span id="incv"></span></label>
+      <input id="inc" type="range" min="0" max="2000000" step="10000" value="400000">
+      <label id="lyr">Rok</label>
+      <div class="seg" role="group" aria-labelledby="lyr"><button type="button" data-v="2026" aria-pressed="false">2026</button><button type="button" data-v="2027" aria-pressed="true">2027</button></div>
+      <label for="mode">Typ podnikání</label>
+      <select id="mode"><option value="main">Hlavní činnost</option><option value="start">Hlavní, první 3 roky</option><option value="sideJob">Vedlejší při zaměstnání</option><option value="sideStud">Vedlejší, student do 26</option></select>
+      <label for="pau">Výdajový paušál</label>
+      <select id="pau"><option value="0.6">60 % – většina živností</option><option value="0.8">80 % – řemeslné</option><option value="0.4">40 % – svobodná povolání</option><option value="0.3">30 % – pronájem</option></select>
+    </form>
+    <div class="out" aria-live="polite">
+      <div class="sub" style="margin:0 0 6px">Odvedeš za rok</div>
+      <div class="big" id="tot">0 Kč</div>
+      <div class="sub" id="mon"></div>
+      <div class="bar" id="bar" aria-hidden="true"></div>
+      <div id="rows"></div>
+      <div class="row"><span></span><b>Zůstane ti</b><b class="n" id="left"></b></div>
+      <div id="cmp"></div>
+      <p class="note">Orientační výpočet s výdajovým paušálem, bez dalších slev. Není to daňové poradenství.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="band" id="cisla"><div class="wrap">
+  <h2>Čísla pro rok 2027</h2>
+  <div class="facts">
+    <div><b>5 281 Kč</b><span>min. sociální záloha měsíčně (hlavní činnost)</span></div>
+    <div><b>3 488 Kč</b><span>min. zdravotní záloha měsíčně (hlavní činnost)</span></div>
+    <div><b>9 662 Kč</b><span>paušální daň, 1. pásmo, měsíčně</span></div>
+    <div><b>123 991 Kč</b><span>roční zisk, do kterého vedlejšák neplatí sociální</span></div>
+    <div><b>1 000 Kč</b><span>poplatek za založení živnosti</span></div>
+    <div><b>2 mil. Kč</b><span>roční obrat, od kterého jsi plátce DPH</span></div>
+  </div>
+  <p class="note">Ověřeno k 27. 11. 2026. V roce 2026: sociální 5 005 Kč, zdravotní 3 306 Kč, rozhodná částka 117 521 Kč.</p>
+</div></section>
+</main>
+
+<footer class="band" id="zdroje"><div class="wrap">
+  <p>Zdroje: <a href="https://www.cssz.gov.cz/">ČSSZ</a>, <a href="https://financnisprava.gov.cz/">Finanční správa</a>, <a href="https://portal.gov.cz/sluzby-vs/S757">Portál veřejné správy</a>, <a href="https://www.rzp.cz/">Portál živnostenského podnikání</a>. Před důležitým rozhodnutím si ověř aktuální stav u úřadu nebo daňového poradce.</p>
+  <p>Vytvořil rampi, 2026. Vzdělávací obsah, ne daňové ani právní poradenství.</p>
+</footer>
+
+<script>{
+const $=id=>document.getElementById(id);
+const S=[
+['Ověř nápad','Zjisti, jestli za to někdo zaplatí, dřív než utratíš.',['Promluv si s 10 potenciálními zákazníky.','Prodej první kus nebo službu předem.','Cena = materiál + čas + odvody + rezerva.']],
+['Vyber formu','Na začátek většinou stačí živnost.',['Živnost: rychlá, 1 000 Kč, ručíš celým majetkem.','s.r.o.: zakládá notář, kapitál od 1 Kč, daň 21 %, ručí firma.','Na s.r.o. přejdi, až budeš mít vyšší zisky nebo společníka.']],
+['Hlavní, nebo vedlejší','Rozhoduje, kolik platíš měsíčně.',['Vedlejší: při zaměstnání nebo studiu do 26 let.','Vedlejší neplatí minimální zálohy, sociální až nad rozhodnou částkou.','Hlavní: minimální zálohy každý měsíc, i když nevyděláš.']],
+['Ohlas živnost','Online za pár minut, dostaneš IČO.',['Od 18 let, svéprávný a bezúhonný.','Online přes Portál živnostenského podnikání s Identitou občana, nebo na úřadě či Czech POINT (+50 Kč).','Formulář tě přihlásí i na finanční úřad a ČSSZ.','Zdravotní pojišťovně to oznam sám do 8 dnů.']],
+['Datovka a účet','Datovou schránku dostaneš automaticky.',['Zapni si upozornění: zpráva je doručená po 10 dnech i nepřečtená.','Samostatný účet není povinný, ale ušetří ti čas.']],
+['Plať zálohy','Sociální do konce měsíce, zdravotní do 8. dne dalšího.',['Nebo paušální režim: jedna platba za vše, bez přiznání.','Přihláška do paušálu do 10. ledna, při startu během roku do 10. dne dalšího měsíce.']],
+['Daně a paušál','Daníš zisk, výdaje můžeš paušálem.',['Paušál: 80 % řemesla, 60 % většina živností, 40 % svobodná povolání, 30 % nájem.','Daň 15 % ze zisku, minus sleva 30 840 Kč ročně.','Přiznání do 1. 4., elektronicky o měsíc déle.']],
+['Hlídej DPH','Plátcem se stáváš až nad 2 miliony obratu.',['Nad 2 000 000 Kč za rok: plátce od 1. ledna.','Nad 2 536 500 Kč: plátce hned další den.']],
+['První faktura','Jméno, IČO, odběratel, číslo, data, cena.',['Přidej větu „Fyzická osoba zapsaná v živnostenském rejstříku“.','Napiš „Nejsem plátce DPH“.','Doklady ukládej od prvního dne do jedné složky.']],
+['První zákazníci','Začni u lidí, kteří tě znají.',['Řekni okolí, založ si firemní profil na Googlu, ukazuj práci na sítích.','Domluvy písemně, aspoň e-mailem.','Z každé platby odlož část na daně a pojištění.']]];
+$('steps').innerHTML=S.map((s,i)=>`<li class="step rv" style="transition-delay:${i%2*60}ms"><button aria-expanded="false" aria-controls="b${i}"><span class="num">${i+1}</span><span><h3>${s[0]}</h3><small>${s[1]}</small></span><span class="pl" aria-hidden="true"></span></button><div class="body" id="b${i}"><div><ul>${s[2].map(x=>`<li>${x}</li>`).join('')}</ul></div></div></li>`).join('');
+$('steps').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const li=b.parentNode,o=li.classList.toggle('open');b.setAttribute('aria-expanded',o)});
+document.querySelector('.boxes').innerHTML=[...'21074385'].map((d,i)=>`<em style="animation-delay:${.5+i*.06}s">${d}</em>`).join('');
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+const secs=[...document.querySelectorAll('main section, footer')],links=[...document.querySelectorAll('.nav a')];
+const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.hash==='#'+e.target.id))}),{rootMargin:'-40% 0px -55% 0px'});
+secs.forEach(s=>so.observe(s));
+addEventListener('scroll',()=>{const h=document.documentElement;$('pr').style.transform=`scaleX(${h.scrollTop/(h.scrollHeight-h.clientHeight)||0})`},{passive:true});
+const Y={2026:{avg:48967,sp:17139,start:12242,side:5387,zp:24483.5,roz:117521,paus:6*9984+6*9162},2027:{avg:51663,sp:18083,start:12916,side:5683,zp:25831.5,roz:123991,paus:12*9662}};
+const cap={.8:1600000,.6:1200000,.4:800000,.3:600000};let yr=2027,shown=0,raf;
+const kc=v=>Math.round(v).toLocaleString('cs-CZ')+' Kč';
+const red=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function tween(to){cancelAnimationFrame(raf);const from=shown,t0=performance.now();const f=t=>{const k=red?1:Math.min(1,(t-t0)/450),v=from+(to-from)*(1-(1-k)**3);shown=v;$('tot').textContent=kc(v);if(k<1)raf=requestAnimationFrame(f)};raf=requestAnimationFrame(f)}
+function calc(){
+  const inc=+$('inc').value,m=$('mode').value,r=+$('pau').value,y=Y[yr];$('incv').textContent=kc(inc);
+  const zd=Math.max(0,inc-Math.min(inc*r,cap[r])),lim=36*y.avg;
+  let tax=zd<=lim?zd*.15:lim*.15+(zd-lim)*.23;if(m!=='sideJob')tax-=30840;tax=Math.max(0,tax);
+  let sp,zp;if(m==='main'||m==='start'){sp=Math.max(zd*.55,(m==='start'?y.start:y.sp)*12)*.292;zp=Math.max(zd*.5,y.zp*12)*.135}else{sp=zd>y.roz?Math.max(zd*.55,y.side*12)*.292:0;zp=zd*.5*.135}
+  const tot=tax+sp+zp;tween(tot);$('mon').textContent=kc(tot/12)+' měsíčně';
+  const P=[['Daň z příjmů',tax,'#8a9099'],['Sociální pojištění',sp,'#e3120b'],['Zdravotní pojištění',zp,'#0f1115']];
+  $('rows').innerHTML=P.map(p=>`<div class="row"><i class="dot" style="background:${p[2]}"></i><span>${p[0]}</span><span class="n">${kc(p[1])}</span></div>`).join('');
+  $('bar').innerHTML=P.map(p=>`<i style="width:${tot?p[1]/tot*100:0}%;background:${p[2]}"></i>`).join('');
+  $('left').textContent=kc(inc-tot);
+  let c='';if((m==='main'||m==='start')&&inc>0&&inc<=1e6){const d=tot-y.paus;c=`Paušální daň by stála ${kc(y.paus)} ročně. ${d>0?'Ušetříš '+kc(d)+'.':'Klasika vychází o '+kc(-d)+' levněji.'}`}
+  if(m.startsWith('side'))c=zd>y.roz?'Zisk je nad rozhodnou částkou, platíš i sociální.':'Zisk je pod rozhodnou částkou, sociální neplatíš.';
+  $('cmp').innerHTML=c?`<div class="cmp">${c}</div>`:'';
+}
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',x===b));yr=+b.dataset.v;calc()}));
+['inc','mode','pau'].forEach(id=>$(id).addEventListener('input',calc));calc();
+}</script>
+</body>
+</html>
